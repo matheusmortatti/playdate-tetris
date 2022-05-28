@@ -41,3 +41,7 @@ luac.out
 
 # playdate output files
 *.pdx
+
+# vscode files
+
+*.vscode
