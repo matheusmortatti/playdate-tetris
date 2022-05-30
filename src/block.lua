@@ -1,11 +1,12 @@
 import "CoreLibs/object"
+import "entity"
 
 class(
     'Block', 
     {
         size=playdate.geometry.vector2D.new(10,10)
     })
-    .extends()
+    .extends(Entity)
 
 function Block:init(pos)
     self.pos=pos

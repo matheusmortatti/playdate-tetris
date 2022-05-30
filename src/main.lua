@@ -10,6 +10,7 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 
 import "block"
+import "entity"
 
 local gfx <const> = playdate.graphics
 
@@ -22,6 +23,7 @@ local block = nil
 
 function myGameSetUp()
     block = Block(playdate.geometry.vector2D.new(64,64))
+    entity.add(block)
 end
 
 -- Now we'll call the function above to configure our game.
@@ -63,7 +65,7 @@ function playdate.update()
     gfx.sprite.update()
     playdate.timer.updateTimers()
 
-    block:update()
-    block:draw()
+    entity.update()
+    entity.draw()
 
 end
