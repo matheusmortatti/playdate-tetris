@@ -1,5 +1,5 @@
 import "CoreLibs/object"
-import "entity"
+import "Engine/Entity/entity"
 
 class(
     'Block', 
@@ -17,5 +17,5 @@ function Block:update()
 end
 
 function Block:draw()
-    playdate.graphics.drawRect(self.pos.dx, self.pos.dy, self.size.dx, self.size.dy)
+    playdate.graphics.drawRect(self.pos.x, self.pos.y, self.size.dx, self.size.dy)
 end

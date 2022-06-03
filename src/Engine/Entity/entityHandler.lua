@@ -1,33 +1,22 @@
--- entity.lua
+-- entityHandler.lua
 -- defines an api to handle game entities.
--- this should be the base class for every object that should interact with others in-game
 
 import "CoreLibs/object"
-
-entity = entity or {}
-entity.objects = entity.objects or {}
+import "Engine/Entity/entity"
 
 class(
-    "Entity",
+    "EntityHandler",
     {
-        object_timer = 0,
-        state_timer = 0,
-        done = false
+        
     }
-).extends()
+).extends(Entity)
 
-function Entity:init()
-
+function EntityHandler:init()
+    self.objects = {}
 end
 
-function Entity:become(state)
-    if self.state~=state and self.state~="dead" then
-        self.state,self.state_timer=state,0
-    end
-end
-
-function entity.update()
-    for _, obj in pairs(entity.objects) do
+function EntityHandler:update()
+    for _, obj in pairs(self.objects) do
         if obj.update then
             obj:update()
         end
@@ -38,7 +27,7 @@ function entity.update()
     end
  
     -- remove all entities that are marked as 'done'
-    arrayRemove(entity.objects, function(t, i, j)
+    arrayRemove(self.objects, function(t, i, j)
         if t[i].done then
             if t[i].onDestruction then
                 t[i]:onDestruction()
@@ -47,29 +36,27 @@ function entity.update()
             return false
         end
 
-        return tonumber
+        return true
     end)
 end
 
-function entity.draw()
-    table.sort(entity.objects, function(o1, o2)
+function EntityHandler:draw()
+    table.sort(self.objects, function(o1, o2)
         return o1.draw_order < o1.draw_order
     end)
 
-    for _, obj in pairs(entity.objects) do
+    for _, obj in pairs(self.objects) do
         if obj.draw then
             obj:draw()
         end
     end
 end
 
-function entity.add(e)
-    if e:isa(Entity) then
-        table.insert(entity.objects, e)
-        return e
-    end
-
-    return nil
+function EntityHandler:add(e)
+    assert(e:isa(Entity))
+    
+    table.insert(self.objects, e)
+    return e
 end
 
 function arrayRemove(t, fnKeep)
